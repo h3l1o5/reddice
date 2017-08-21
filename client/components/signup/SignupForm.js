@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import map from 'lodash/map'
 import axios from 'axios'
+import classnames from 'classnames'
 
 import timezones from '../../data/timezones'
 
@@ -12,7 +13,9 @@ class SignupForm extends Component {
       email: '',
       password: '',
       passwordConfirmation: '',
-      timezone: ''
+      timezone: '',
+      errors: [],
+      isLoading: false
     }
   }
 
@@ -21,19 +24,24 @@ class SignupForm extends Component {
   }
 
   handleSubmit = (e) => {
+    this.setState({ errors: [], isLoading: true })
     e.preventDefault()
     this.props.userSignupRequest(this.state)
+      .then((res) => { 
+        this.setState({ errors: res.data, isLoading: false }) 
+      })
   }
 
   render() {
     const options = map(timezones, (val, key) => (
       <option key={key} value={val}>{key}</option>
     ))
+    const { errors } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Join our community!</h1>
 
-        <div className="form-group">
+        <div className={classnames("form-group", { 'has-error': errors.username })}>
           <label className="control-label">Username</label>
           <input 
             type="text" 
@@ -42,9 +50,10 @@ class SignupForm extends Component {
             value={this.state.username} 
             onChange={this.handleChange}
           />
+          {errors.username && <span className="help-block">{errors.username}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", { 'has-error': errors.email })}>
           <label className="control-label">Email</label>
           <input 
             type="email" 
@@ -53,9 +62,10 @@ class SignupForm extends Component {
             value={this.state.email} 
             onChange={this.handleChange}
           />
+          {errors.email && <span className="help-block">{errors.email}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", { 'has-error': errors.password })}>
           <label className="control-label">Password</label>
           <input 
             type="password" 
@@ -64,20 +74,22 @@ class SignupForm extends Component {
             value={this.state.password} 
             onChange={this.handleChange}
           />
+          {errors.password && <span className="help-block">{errors.password}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", { 'has-error': errors.passwordConfirmation })}>
           <label className="control-label">Password Confirmation</label>
           <input 
             type="password" 
             className="form-control" 
-            name="Password Confirmation" 
+            name="passwordConfirmation" 
             value={this.state.passwordConfirmation} 
             onChange={this.handleChange}
           />
+          {errors.passwordConfirmation && <span className="help-block">{errors.passwordConfirmation}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", { 'has-error': errors.timezone })}>
           <label className="control-label">Timezone</label>
           <select  
             className="form-control" 
@@ -88,10 +100,11 @@ class SignupForm extends Component {
             <option value="" disabled>Choose Your Timezone</option>
             {options}
           </select>
+          {errors.timezone && <span className="help-block">{errors.timezone}</span>}
         </div>
 
         <div className="form-group">
-          <button className="btn btn-primary btn-lg">
+          <button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
             Sign up
           </button>
         </div>
