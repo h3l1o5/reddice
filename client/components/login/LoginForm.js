@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import TextFieldGroup from '../common/TextFieldGroup'
 import validateInput from '../../../server/shared/validations/login'
 import { login } from '../../actions/loginActions'
+import { addFlashMessage } from '../../actions/flashMessages'
 
 class LoginForm extends Component {
   constructor(props) {
@@ -27,14 +28,15 @@ class LoginForm extends Component {
       this.setState({ errors: {}, isLoading: true })
       this.props.login(this.state)
         .then((res) => {
-          this.setState({ errors: res.data.errors, isLoading: false }) 
-          if (res.data.isValid) {
-            this.props.addFlashMessage({
-              type: 'success',
-              text: 'You log in seccessfully. Welcome!'
-            })
-            this.context.router.history.push('/')
-          }
+          this.setState({ isLoading: false }) 
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'You log in seccessfully. Welcome!'
+          })
+          this.context.router.history.push('/')
+        })
+        .catch((err) => {
+          this.setState({ errors: err.response.data.errors, isLoading: false })           
         })
     }
   }
@@ -54,6 +56,8 @@ class LoginForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Login</h1>
+
+        { errors.form && <div className="alert alert-danger">{errors.form}</div>}
 
         <TextFieldGroup
           field="identifier"
@@ -88,4 +92,4 @@ LoginForm.contextTypes = {
   router: React.PropTypes.object.isRequired
 }
 
-export default connect(null, { login })(LoginForm)
+export default connect(null, { login, addFlashMessage })(LoginForm)

@@ -14,18 +14,29 @@ router.post('/signup', (req, res, next) => {
     
     if (user) {
       errors.username = 'This username is already existed'
+      res.json({ errors, isValid: isEmpty(errors) })
     } else {
-      const newUser = new User({
-        username: username,
-        password: password,
-        email: email,
-        timezone: timezone
+      User.findOne({ email: email }, (err, user) => {
+        if (err) { return next(err) }
+
+        if (user) {
+          errors.email = 'This email is already existed'
+        } else {
+          const newUser = new User({
+            username: username,
+            password: password,
+            email: email,
+            timezone: timezone
+          })
+
+          newUser.save(next)
+        }
+        res.json({ errors, isValid: isEmpty(errors) })
       })
 
-      newUser.save(next)
     }
 
-    res.json({ errors, isValid: isEmpty(errors) })
+    
   })
 })
 
