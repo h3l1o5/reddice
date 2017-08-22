@@ -13,6 +13,12 @@ const login = (data) => (dispatch) => {
   })
 }
 
+const logout = () => (dispatch) => {
+  localStorage.removeItem('jwt')
+  setAuthorizationToken(false)
+  dispatch(setCurrentUser({}))
+}
+
 const setCurrentUser = (user) => {
   return {
     type: SET_CURRENT_USER,
@@ -22,5 +28,6 @@ const setCurrentUser = (user) => {
 
 export {
   login,
+  logout,
   setCurrentUser
 }
