@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import map from 'lodash/map'
 import axios from 'axios'
 import classnames from 'classnames'
-import {  } from 'react-router-dom'
 
 import timezones from '../../data/timezones'
 import validateInput from '../../../server/shared/validations/signup'
@@ -36,6 +35,10 @@ class SignupForm extends Component {
           this.setState({ errors: res.data.errors, isLoading: false })        
 
           if (res.data.isValid) {
+            this.props.addFlashMessage({
+              type: 'success',
+              text: 'You signed up seccessfully. Welcome!'
+            })
             this.context.router.history.push('/')
           }
         })
@@ -122,7 +125,8 @@ class SignupForm extends Component {
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired
+  userSignupRequest: React.PropTypes.func.isRequired,
+  addFlashMessage: React.PropTypes.func.isRequired
 }
 
 SignupForm.contextTypes = {
