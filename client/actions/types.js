@@ -1,1 +1,2 @@
 export const ADD_FLASH_MESSAGE = 'ADD'
+export const DELETE_FLASH_MESSAGE = 'DELETE'
