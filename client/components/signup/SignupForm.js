@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import map from 'lodash/map'
 import axios from 'axios'
 import classnames from 'classnames'
+import {  } from 'react-router-dom'
 
 import timezones from '../../data/timezones'
 import validateInput from '../../../server/shared/validations/signup'
@@ -32,7 +33,11 @@ class SignupForm extends Component {
       this.setState({ errors: [], isLoading: true })
       this.props.userSignupRequest(this.state)
         .then((res) => { 
-          this.setState({ errors: res.data, isLoading: false }) 
+          this.setState({ errors: res.data.errors, isLoading: false })        
+
+          if (res.data.isValid) {
+            this.context.router.history.push('/')
+          }
         })
     }
   }
@@ -118,6 +123,10 @@ class SignupForm extends Component {
 
 SignupForm.propTypes = {
   userSignupRequest: React.PropTypes.func.isRequired
+}
+
+SignupForm.contextTypes = {
+  router: React.PropTypes.object.isRequired
 }
 
 export default SignupForm;
