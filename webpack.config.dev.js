@@ -28,4 +28,8 @@ export default {
       }
     ]
   },
+  node: {
+    net: 'empty',
+    dns: 'empty'
+  }
 }

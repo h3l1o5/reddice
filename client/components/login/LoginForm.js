@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import TextFieldGroup from '../common/TextFieldGroup'
 import validateInput from '../../../server/shared/validations/login'
-import { login } from '../../actions/loginActions'
+import { login } from '../../actions/authActions'
 import { addFlashMessage } from '../../actions/flashMessages'
 
 class LoginForm extends Component {
@@ -24,7 +24,6 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     if (this.isValid()) {
-      console.log('hi')
       this.setState({ errors: {}, isLoading: true })
       this.props.login(this.state)
         .then((res) => {
