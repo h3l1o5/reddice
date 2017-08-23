@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 
 import App from './components/App'
 import rootReducer from './rootReducer'
@@ -22,7 +22,7 @@ const store = createStore(
 // keep user login if jwt existed
 if (localStorage.jwt) {
   setAuthorizationToken(localStorage.jwt)
-  store.dispatch(setCurrentUser(jwt.decode(localStorage.jwt)))
+  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwt)))
 }
 
 ReactDOM.render(
