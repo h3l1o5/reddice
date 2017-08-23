@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import classnames from 'classnames'
 
 class FlashMessage extends Component {
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.deleteFlashMessage(this.props.message.id)
+    }, 3000)
+  }
+
   onClick = () => {
     this.props.deleteFlashMessage(this.props.message.id)
   }
