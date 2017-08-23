@@ -15,12 +15,14 @@ class NavigationBar extends Component {
 
     const userLinks = (
       <ul className="nav navbar-nav navbar-right">
+        <li><Link to="/new-event">New event</Link></li>
         <li><a href="#" onClick={this.logout}>Logout</a></li>
       </ul>
     )
 
     const guestLinks = (
       <ul className="nav navbar-nav navbar-right">
+        <li><Link to="/new-event">New event</Link></li>
         <li><Link to="/signup">Sign up</Link></li>
         <li><Link to="/login">Log in</Link></li>
       </ul>

@@ -18,7 +18,7 @@ router.post('/', (req, res, next) => {
         if (err) { next(err) }
         if (isMatch) {
           const token = jwt.sign({
-            id: user.id,
+            id: user._id,
             username: user.username
           }, config.jwtSecret)
           res.json({ token })
