@@ -32,15 +32,16 @@ class SignupForm extends Component {
       this.setState({ errors: [], isLoading: true })
       this.props.userSignupRequest(this.state)
         .then((res) => { 
-          this.setState({ errors: res.data.errors, isLoading: false })        
+          this.setState({ errors: res.data.errors, isLoading: false })         
 
-          if (res.data.isValid) {
-            this.props.addFlashMessage({
-              type: 'success',
-              text: 'You signed up seccessfully. Welcome!'
-            })
-            this.context.router.history.push('/')
-          }
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'You signed up seccessfully. Welcome!'
+          })
+          this.context.router.history.push('/')
+        })
+        .catch((err) => {
+          this.setState({ errors: err.response.data.errors, isLoading: false})
         })
     }
   }

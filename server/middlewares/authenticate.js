@@ -18,9 +18,12 @@ export default (req, res, next) => {
       const query = User.findOne({ id: decoded.id })
 
       User.findOne({ _id: decoded.id }, '_id username email', (err, user) => {
-        if (!user) { res.status(404).json({ error: 'No such user' })}
-        req.currentUser = user
-        next()
+        if (!user) { 
+          res.status(404).json({ error: 'No such user' })
+        } else {
+          req.currentUser = user
+          next()
+        }
       })
     })
   } else {

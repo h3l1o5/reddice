@@ -14,12 +14,13 @@ router.post('/signup', (req, res, next) => {
     
     if (user) {
       errors.username = 'This username is already existed'
-      res.json({ errors, isValid: isEmpty(errors) })
+      res.status(401).json({ errors })
     } else {
       User.findOne({ email: email }, (err, user) => {
         if (err) { return next(err) }
 
         if (user) {
+          res.status(401)
           errors.email = 'This email is already existed'
         } else {
           const newUser = new User({
@@ -31,7 +32,7 @@ router.post('/signup', (req, res, next) => {
 
           newUser.save(next)
         }
-        res.json({ errors, isValid: isEmpty(errors) })
+        res.json({ errors })
       })
 
     }
